@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML5 Geolocation with Openstreetmap and OpenLayers</title>
+    <style type="text/css">
+      html, body, #basicMap {
+          width: 640;
+          height: 520;
+          margin: 10;
+      }
+    </style>
+
+  </head>
+
+  <body>
+<center>
+HTML5 geolocation:
+<br>
+    <div id="basicMap"></div>
+<br>HTML5 geolocation<br>
+<br>with Openstreetmap and OpenLayers<br>
+<br>
+Your position estimated by browser geolocation API:<p>
+
+<div id="anzeige">(will be displayed here)<p></div>
+</center>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://openlayers.org/api/OpenLayers.js"></script>
+<script>
+function init() {
+    map = new OpenLayers.Map('basicMap');
+    var mapnik = new OpenLayers.Layer.OSM();
+    map.addLayer(mapnik);
+    navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById('anzeige').innerHTML="Latitude: " + position.coords.latitude + 
+            " Longitude: " +
+            position.coords.longitude + "<p>";
+            var lonLat = new OpenLayers.LonLat(position.coords.longitude,
+                position.coords.latitude)
+            .transform(
+                new OpenLayers.Projection("EPSG:4326"), //transform from WGS 1984
+                map.getProjectionObject() //to Spherical Mercator Projection
+                );
+
+            markers.addMarker(new OpenLayers.Marker(lonLat));
+
+            map.setCenter(lonLat, 16 // Zoom level
+                );
+
+            });
+    //map = new OpenLayers.Map("basicMap");
+    //var mapnik = new OpenLayers.Layer.OSM();
+    //map.addLayer(mapnik);
+    map.setCenter(new
+            OpenLayers.LonLat(3,3) // Center of the map
+            .transform(
+                new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
+                ), 15 // Zoom level
+            );
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+
+}
+    </script>
+<script>
+$( document ).ready(function() {
+   var data=init();
+   console.log("i am calling");
+});
+</script>
+
+
+  </body>
+</html>
