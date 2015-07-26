@@ -5,6 +5,7 @@ urlpatterns = patterns('location_mapper.views',
 
     url(r'^get-location/$', 'get_location', name='get_location'),
     url(r'^get_vehicle/$', 'get_vehicle', name='get_vehicle'),
+    url(r'^save_location/$','save_location',name='save_location'),
 
 
 )
